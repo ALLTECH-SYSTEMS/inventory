@@ -8,6 +8,7 @@ import com.inventory.book.service.BookService;
 import com.inventory.book.service.CartService;
 import com.inventory.book.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,5 +37,17 @@ public class CartController {
     public List<CartDTO> viewCart(@RequestParam Long userId) {
         User user = userService.getUserById(userId);
         return cartService.getCartDTOsByUser(user);
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<?> removeFromCart(@RequestParam Long userId, @RequestParam Long bookId, @RequestParam int quantity) {
+        User user = userService.getUserById(userId);
+        Book book = bookService.getBookById(bookId);
+        try {
+            cartService.removeFromCart(user, book, quantity);
+            return ResponseEntity.ok().body("Item removed or quantity updated successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

@@ -27,6 +27,9 @@ public class Book extends RootEntity {
     @Column(nullable = false)
     private int yearOfPublication;
 
+    @Column(nullable = false)
+    private double price;
+
     public String getTitle() {
         return title;
     }
@@ -67,4 +70,11 @@ public class Book extends RootEntity {
         this.yearOfPublication = yearOfPublication;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

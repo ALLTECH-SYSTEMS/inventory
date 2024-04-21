@@ -2,22 +2,25 @@ package com.inventory.book.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
-public class Cart extends RootEntity {
+public class PurchaseHistory extends RootEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @Column(nullable = false)
     private int quantity;
 
     @Column(nullable = false)
-    private double totalPrice;
+    private double price;
+
+    @Column(nullable = false)
+    private Date purchaseDate;
 
     public User getUser() {
         return user;
@@ -33,7 +36,6 @@ public class Cart extends RootEntity {
 
     public void setBook(Book book) {
         this.book = book;
-        updateTotalPrice();
     }
 
     public int getQuantity() {
@@ -42,16 +44,21 @@ public class Cart extends RootEntity {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        updateTotalPrice();
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public double getPrice() {
+        return price;
     }
 
-    private void updateTotalPrice() {
-        if (book != null) {
-            this.totalPrice = this.quantity * this.book.getPrice();
-        }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 }

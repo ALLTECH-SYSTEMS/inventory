@@ -38,7 +38,26 @@ public class CartService {
 
     public List<CartDTO> getCartDTOsByUser(User user) {
         return cartRepository.findByUser(user).stream()
-                .map(cart -> new CartDTO(cart.getId(), cart.getQuantity(), cart.getBook().getTitle()))
+                .map(cart -> new CartDTO(cart.getId(), cart.getQuantity(), cart.getBook().getTitle(), cart.getBook().getId(), cart.getTotalPrice()))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void removeFromCart(User user, Book book, int quantity) {
+        List<Cart> existingItems = cartRepository.findByUser(user);
+        for (Cart item : existingItems) {
+            if (item.getBook().getId().equals(book.getId())) {
+                int remainingQuantity = item.getQuantity() - quantity;
+                if (remainingQuantity > 0) {
+                    item.setQuantity(remainingQuantity);
+                    cartRepository.save(item);
+                } else {
+                    // If the remaining quantity is less than or equal to zero, remove the item completely
+                    cartRepository.delete(item);
+                }
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Item not found in cart or quantity to remove exceeds the existing quantity");
     }
 }
