@@ -30,6 +30,25 @@ public class Book extends RootEntity {
     @Column(nullable = false)
     private double price;
 
+
+
+
+    // Default constructor for JPA
+    public Book() {
+    }
+
+    // Constructor with parameters
+    public Book(String author, Genre genre, String isbn, String title, int yearOfPublication, double price) {
+        this.author = author;
+        this.genre = genre;
+        this.isbn = isbn;
+        this.title = title;
+        this.yearOfPublication = yearOfPublication;
+        this.price = price;
+    }
+
+
+   //Getters and Setters
     public String getTitle() {
         return title;
     }
