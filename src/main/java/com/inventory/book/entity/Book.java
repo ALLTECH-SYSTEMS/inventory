@@ -66,4 +66,5 @@ public class Book extends RootEntity {
     public void setYearOfPublication(int yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
     }
+
 }

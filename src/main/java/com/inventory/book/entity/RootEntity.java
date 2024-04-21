@@ -29,4 +29,11 @@ public class RootEntity {
     @Column(name = "is_deleted")
     private int deleted;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

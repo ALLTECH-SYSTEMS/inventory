@@ -2,6 +2,7 @@ package com.inventory.book.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,5 +38,11 @@ public class BookService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
        
+    }
+
+    public Book getBookById(Long bookId) {
+        Optional<Book> book = bookRepository.findById(bookId);
+
+        return book.orElseThrow(() -> new RuntimeException("Book not found with id: " + bookId));
     }
 }
