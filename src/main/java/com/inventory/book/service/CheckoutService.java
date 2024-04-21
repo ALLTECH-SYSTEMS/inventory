@@ -25,7 +25,7 @@ public class CheckoutService {
     public void checkout(User user, String paymentMethod) {
         List<Cart> cartItems = cartRepository.findByUser(user);
 
-        // Simulate payment process based on paymentMethod
+
         if (simulatePayment(cartItems, paymentMethod)) {
             cartItems.forEach(item -> {
 
@@ -37,7 +37,7 @@ public class CheckoutService {
                 history.setPurchaseDate(new Date());
                 purchaseHistoryRepository.save(history);
 
-                cartRepository.delete(item);  // Clear the cart item after purchase
+                cartRepository.delete(item);
             });
         } else {
             throw new RuntimeException("Payment failed. Please try again.");
@@ -45,7 +45,34 @@ public class CheckoutService {
     }
 
     private boolean simulatePayment(List<Cart> cartItems, String paymentMethod) {
-        // Simulation logic for payment
-        return true; // Simulate success for now
+
+        switch (paymentMethod) {
+            case "WEB":
+                return simulateWebPayment(cartItems);
+            case "USSD":
+                return simulateUssdPayment(cartItems);
+            case "TRANSFER":
+                return simulateTransferPayment(cartItems);
+            default:
+                return false;  // Unknown payment method
+        }
+
     }
+
+    private boolean simulateWebPayment(List<Cart> cartItems) {
+
+        return true;
+    }
+
+    private boolean simulateUssdPayment(List<Cart> cartItems) {
+
+        return true;
+    }
+
+    private boolean simulateTransferPayment(List<Cart> cartItems) {
+
+        return true;
+    }
+
+
 }
