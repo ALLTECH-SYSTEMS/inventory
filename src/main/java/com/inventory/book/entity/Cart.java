@@ -1,5 +1,6 @@
 package com.inventory.book.entity;
 
+import com.inventory.book.enums.Genre;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +20,19 @@ public class Cart extends RootEntity {
     @Column(nullable = false)
     private double totalPrice;
 
+
+    // Default constructor for JPA
+    public Cart() {
+    }
+
+    public Cart(User user, Book book, int quantity, double totalPrice) {
+        this.user = user;
+        this.book = book;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+    }
+
+    //Getters and Setters
     public User getUser() {
         return user;
     }

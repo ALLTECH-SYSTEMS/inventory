@@ -44,7 +44,7 @@ public class CheckoutService {
         }
     }
 
-    private boolean simulatePayment(List<Cart> cartItems, String paymentMethod) {
+    boolean simulatePayment(List<Cart> cartItems, String paymentMethod) {
 
         switch (paymentMethod) {
             case "WEB":
