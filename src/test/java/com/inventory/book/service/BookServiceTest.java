@@ -3,16 +3,25 @@ package com.inventory.book.service;
 import com.inventory.book.entity.Book;
 import com.inventory.book.enums.Genre;
 import com.inventory.book.repository.BookRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
@@ -51,5 +60,29 @@ public class BookServiceTest {
         }, "A RuntimeException should be thrown if no book is found");
 
         assertTrue(exception.getMessage().contains("Book not found with id: " + bookId), "Exception message should contain the correct book ID");
+    }
+
+    @Test
+    public void testSearchBooks_WithAllCriteria() {
+        // Setup
+        String title = "1984";
+        String author = "George Orwell";
+        Integer year = 1949;
+        String genre = "FICTION";
+        when(bookRepository.findAll(any(Specification.class))).thenAnswer(invocation -> {
+            // Logic to assert the correct Specification is being constructed
+            return Arrays.asList(new Book(author, Genre.FICTION, "978-0451524935", title, year, 20.00));
+        });
+
+        // Execute
+        List<Book> results = bookService.searchBooks(title, author, year, genre);
+
+        // Verify
+        assertNotNull(results);
+        assertEquals(1, results.size());
+        Book result = results.get(0);
+        assertEquals(title, result.getTitle());
+        assertEquals(author, result.getAuthor());
+        assertEquals(year, result.getYearOfPublication());
     }
 }
