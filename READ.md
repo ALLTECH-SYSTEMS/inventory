@@ -38,4 +38,4 @@ This project uses the following major dependencies:
 ### Building the Project
 To build the project, run the following command from the root of the project:
 ```bash
-mvn clean install
+mvn spring-boot:run
